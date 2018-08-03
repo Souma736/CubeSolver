@@ -44,10 +44,10 @@ def construct_cube(random = False):
         for s in range(6):
             for i in range(3):
                 for j in range(3):
-                    if i!=2 or j!=2:
+                    if i!=1 or j!=1:
                         cube[s,i,j,:] = all_squres[counter]
                         counter += 1
-            cube[s,2,2,:] = color_bar[s,:]
+            cube[s,1,1,:] = color_bar[s,:]
     else:
         for s in range(6):
             for i in range(3):
@@ -69,16 +69,19 @@ def Forward(cube,clockwise):
     """
     
     # 得到所要移动面的所有数据。
+    #  4
+    # 2031 >> 0是目标
+    #  5
     scramble_cubelets = {}
 
-    scramble_cubelets['L'] = cube[2,:,2,:] 
-    scramble_cubelets['R'] = cube[3,:,0,:]
-    scramble_cubelets['U'] = cube[4,2,:,:]
-    scramble_cubelets['D'] = cube[5,0,:,:]
-    scramble_cubelets['LF'] = cube[0,:,0,:]
-    scramble_cubelets['RF'] = cube[0,:,2,:]
-    scramble_cubelets['UF'] = cube[0,0,:,:]
-    scramble_cubelets['DF'] = cube[0,2,:,:]
+    scramble_cubelets['L'] = cube[2,:,2,:].copy()
+    scramble_cubelets['R'] = cube[3,:,0,:].copy()
+    scramble_cubelets['U'] = cube[4,2,:,:].copy()
+    scramble_cubelets['D'] = cube[5,0,:,:].copy()
+    scramble_cubelets['LF'] = cube[0,:,0,:].copy()
+    scramble_cubelets['RF'] = cube[0,:,2,:].copy()
+    scramble_cubelets['UF'] = cube[0,0,:,:].copy()
+    scramble_cubelets['DF'] = cube[0,2,:,:].copy()
     # 逆时针
     if not clockwise:
         cube[2,:,2,:] = scramble_cubelets['U']
@@ -109,14 +112,14 @@ def Backward(cube,clockwise):
     """
     scramble_cubelets = {}
 
-    scramble_cubelets['L'] = cube[3,:,2,:] 
-    scramble_cubelets['R'] = cube[2,:,0,:]
-    scramble_cubelets['U'] = cube[4,0,:,:]
-    scramble_cubelets['D'] = cube[5,2,:,:]
-    scramble_cubelets['LB'] = cube[1,:,0,:]
-    scramble_cubelets['RB'] = cube[1,:,2,:]
-    scramble_cubelets['UB'] = cube[1,0,:,:]
-    scramble_cubelets['DB'] = cube[1,2,:,:]
+    scramble_cubelets['L'] = cube[3,:,2,:].copy()
+    scramble_cubelets['R'] = cube[2,:,0,:].copy()
+    scramble_cubelets['U'] = cube[4,0,:,:].copy()
+    scramble_cubelets['D'] = cube[5,2,:,:].copy()
+    scramble_cubelets['LB'] = cube[1,:,0,:].copy()
+    scramble_cubelets['RB'] = cube[1,:,2,:].copy()
+    scramble_cubelets['UB'] = cube[1,0,:,:].copy()
+    scramble_cubelets['DB'] = cube[1,2,:,:].copy()
     if clockwise:
         cube[3,:,2,:] = scramble_cubelets['D']
         cube[5,2,:,:] = scramble_cubelets['R']
@@ -146,14 +149,14 @@ def Left(cube,clockwise):
     """
     scramble_cubelets = {}
 
-    scramble_cubelets['L'] = cube[1,:,2,:] 
-    scramble_cubelets['R'] = cube[0,:,0,:]
-    scramble_cubelets['U'] = cube[4,:,0,:]
-    scramble_cubelets['D'] = cube[5,:,0,:]
-    scramble_cubelets['LL'] = cube[2,:,0,:]
-    scramble_cubelets['RL'] = cube[2,:,2,:]
-    scramble_cubelets['UL'] = cube[2,0,:,:]
-    scramble_cubelets['DL'] = cube[2,2,:,:]
+    scramble_cubelets['L'] = cube[1,:,2,:].copy()
+    scramble_cubelets['R'] = cube[0,:,0,:].copy()
+    scramble_cubelets['U'] = cube[4,:,0,:].copy()
+    scramble_cubelets['D'] = cube[5,:,0,:].copy()
+    scramble_cubelets['LL'] = cube[2,:,0,:].copy()
+    scramble_cubelets['RL'] = cube[2,:,2,:].copy()
+    scramble_cubelets['UL'] = cube[2,0,:,:].copy()
+    scramble_cubelets['DL'] = cube[2,2,:,:].copy()
     if clockwise:
         cube[1,:,2,:] = scramble_cubelets['D']
         cube[5,:,0,:] = scramble_cubelets['R']
@@ -183,14 +186,14 @@ def Right(cube,clockwise):
     """
     scramble_cubelets = {}
 
-    scramble_cubelets['L'] = cube[0,:,2,:] 
-    scramble_cubelets['R'] = cube[1,:,0,:]
-    scramble_cubelets['U'] = cube[4,:,2,:]
-    scramble_cubelets['D'] = cube[5,:,2,:]
-    scramble_cubelets['LR'] = cube[3,:,0,:]
-    scramble_cubelets['RR'] = cube[3,:,2,:]
-    scramble_cubelets['UR'] = cube[3,0,:,:]
-    scramble_cubelets['DR'] = cube[3,2,:,:]
+    scramble_cubelets['L'] = cube[0,:,2,:].copy() 
+    scramble_cubelets['R'] = cube[1,:,0,:].copy()
+    scramble_cubelets['U'] = cube[4,:,2,:].copy()
+    scramble_cubelets['D'] = cube[5,:,2,:].copy()
+    scramble_cubelets['LR'] = cube[3,:,0,:].copy()
+    scramble_cubelets['RR'] = cube[3,:,2,:].copy()
+    scramble_cubelets['UR'] = cube[3,0,:,:].copy()
+    scramble_cubelets['DR'] = cube[3,2,:,:].copy()
     if clockwise:
         cube[0,:,2,:] = scramble_cubelets['D']
         cube[5,:,2,:] = scramble_cubelets['R']
@@ -220,14 +223,14 @@ def Up(cube,clockwise):
     """
     scramble_cubelets = {}
 
-    scramble_cubelets['L'] = cube[2,0,:,:] 
-    scramble_cubelets['R'] = cube[3,0,:,:]
-    scramble_cubelets['U'] = cube[1,0,:,:]
-    scramble_cubelets['D'] = cube[0,0,:,:]
-    scramble_cubelets['LU'] = cube[4,:,0,:]
-    scramble_cubelets['RU'] = cube[4,:,2,:]
-    scramble_cubelets['UU'] = cube[4,0,:,:]
-    scramble_cubelets['DU'] = cube[4,2,:,:]
+    scramble_cubelets['L'] = cube[2,0,:,:].copy() 
+    scramble_cubelets['R'] = cube[3,0,:,:].copy()
+    scramble_cubelets['U'] = cube[1,0,:,:].copy()
+    scramble_cubelets['D'] = cube[0,0,:,:].copy()
+    scramble_cubelets['LU'] = cube[4,:,0,:].copy()
+    scramble_cubelets['RU'] = cube[4,:,2,:].copy()
+    scramble_cubelets['UU'] = cube[4,0,:,:].copy()
+    scramble_cubelets['DU'] = cube[4,2,:,:].copy()
     if clockwise:
         cube[2,0,:,:] = scramble_cubelets['D']
         cube[0,0,:,:] = scramble_cubelets['R']
@@ -257,14 +260,14 @@ def Down(cube,clockwise):
     """
     scramble_cubelets = {}
 
-    scramble_cubelets['L'] = cube[2,2,:,:] 
-    scramble_cubelets['R'] = cube[3,2,:,:]
-    scramble_cubelets['U'] = cube[0,2,:,:]
-    scramble_cubelets['D'] = cube[1,2,:,:]
-    scramble_cubelets['LD'] = cube[5,:,0,:]
-    scramble_cubelets['RD'] = cube[5,:,2,:]
-    scramble_cubelets['UD'] = cube[5,0,:,:]
-    scramble_cubelets['DD'] = cube[5,2,:,:]
+    scramble_cubelets['L'] = cube[2,2,:,:].copy() 
+    scramble_cubelets['R'] = cube[3,2,:,:].copy()
+    scramble_cubelets['U'] = cube[0,2,:,:].copy()
+    scramble_cubelets['D'] = cube[1,2,:,:].copy()
+    scramble_cubelets['LD'] = cube[5,:,0,:].copy()
+    scramble_cubelets['RD'] = cube[5,:,2,:].copy()
+    scramble_cubelets['UD'] = cube[5,0,:,:].copy()
+    scramble_cubelets['DD'] = cube[5,2,:,:].copy()
     if clockwise:        
         cube[2,2,:,:] = scramble_cubelets['D']
         cube[1,2,:,:] = scramble_cubelets['R']
@@ -295,7 +298,8 @@ def Random_scramble(N,cube):
     direction = [True,False]
     for ac_id,direc_id in zip(action_ids,direction_ids):
         cube = action_func[ac_id](cube,direction[direc_id])
-    
+        print(ac_id,direc_id)
+    return cube
 #################
 #GUI 以及颜色定义
 ################
@@ -320,8 +324,8 @@ def Draw_color(board,surface,data):
     for i in range(3):
         for j in range(3):
             color = Color_bar[np.argmax(data[i,j,:])]
-            board.create_rectangle(i*cubelet_width+col,j*cubelet_width+row,
-                                    (i+1)*cubelet_width+col,(j+1)*cubelet_width+row,fill = color,width = 10)
+            board.create_rectangle(j*cubelet_width+col,i*cubelet_width+row,
+                                    (j+1)*cubelet_width+col,(i+1)*cubelet_width+row,fill = color,width = 10)
 
 def GUI_init(cube):
 
@@ -353,9 +357,14 @@ def GUI_init(cube):
     return [GUI,board]
 
 def update_GUI(cube,board):
-    pass
+    for index,s in enumerate(surface_order):
+        data = cube[s,:,:,:]
+        surface_refine = surface_coors[index]
+        Draw_color(board,surface_refine,data)
     
 cube = construct_cube(random=False)
 [GUI,board] = GUI_init(cube)
+cube = Random_scramble(2,cube)
+update_GUI(cube,board)
 GUI.mainloop()
-#### 显示逻辑错误
+## 多次旋转有问题，
