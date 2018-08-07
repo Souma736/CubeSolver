@@ -121,8 +121,7 @@ class GUI_env():
 
 class Agent(GUI_env):
     """
-    所有均采用顺时针
-    垃圾数据结构，，，，
+    Don't try to chang these functions, its hard and complicate.
     """
     def Forward(self,clockwise):
         """
@@ -346,6 +345,7 @@ class Agent(GUI_env):
             self.cube[5,2,:,:] = scramble_cubelets['LD']
             self.cube[5,:,2,:] = scramble_cubelets['DD'][rc,:]
             self.cube[5,0,:,:] = scramble_cubelets['RD']
+            #checked --->
 
     def Random_scramble(self,N):
         """
