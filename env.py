@@ -10,7 +10,6 @@ from random import shuffle
 import time
 
 
-
 #################
 #GUI_env 以及颜色定义
 ################
@@ -31,6 +30,7 @@ class GUI_env():
         self.GUI.title("CubeSolver_V1.0")
         self.board = tk.Canvas(self.GUI,width=self.col_number*self.cubelet_width,height = self.row_number*self.cubelet_width)
         self.cube = self.construct_cube(random=False)
+        #self.frame = tk.Frame(self.GUI)   # add for test, delete is ok.
         #初始化魔方
         self.GUI_init()
     def Draw_color(self,surface,data):
@@ -115,6 +115,31 @@ class GUI_env():
             data = self.cube[s,:,:,:]
             surface_refine = self.surface_coors[index]
             self.Draw_color(surface_refine,data)
+
+    
+    def check_integrity(self):
+        """
+        检查魔方状态
+        return:
+            True : 魔方已经被还原
+            False: 魔方未被还原
+        """
+        for s in range(6):
+            for i in range(3):
+                for j in range(3):
+                    if np.argmax(self.cube[s,i,j,:]) != s:
+                        return False
+        return True
+    
+    def get_reward(self):
+        """
+        
+        """
+
+
+
+        
+
     def show(self):
         self.GUI.mainloop()
 
@@ -350,6 +375,7 @@ class Agent(GUI_env):
     def Random_scramble(self,N):
         """
         对当前状态的魔方随机旋转N次
+        如果训练是 sleep 为False
         """
         action_ids = np.random.randint(0,high=6,size=N)
         direction_ids =np.random.randint(0,high =2, size = N)
@@ -357,9 +383,23 @@ class Agent(GUI_env):
         direction = [True,False]
         for ac_id,direc_id in zip(action_ids,direction_ids):
             action_func[ac_id](direction[direc_id])
-            print(ac_id,direc_id)
-
-agent = Agent()
-agent.Random_scramble(120)
-agent.update_GUI()
-agent.show()
+            self.update_GUI()
+    def _test(self):
+        """
+        测试魔方旋转是否正确,only used for debug.
+        """
+        stride = 10
+        action_ids = np.random.randint(0,high =6,size = stride)
+        direction_ids = np.random.randint(0,high = 2, size = stride)
+        action_func = [self.Forward,self.Backward,self.Left,self.Right,self.Up,self.Down]
+        direction = [True,False]
+        for ac_id,direc_id in zip(action_ids,direction_ids):
+            action_func[ac_id](direction[direc_id])
+            self.update_GUI()
+            time.sleep(1.5)
+        for i in range(stride):
+            action_func[action_ids[stride-1-i]](direction[not direction_ids[stride-1-i]])
+            self.update_GUI()
+            time.sleep(1.5)
+        if self.check_integrity():
+            print("Everything is Ok!")
